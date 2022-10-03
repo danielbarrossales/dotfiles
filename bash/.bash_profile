@@ -12,5 +12,7 @@ export XDG_SESSION_TYPE="wayland"
 export QT_QPA_PLATFORM="wayland"
 export QT_STYLE_OVERRIDE="kvantum"
 
+alias xterm="foot"
+
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
