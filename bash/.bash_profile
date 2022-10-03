@@ -11,6 +11,7 @@ export XDG_CURRENT_DESKTOP="sway"
 export XDG_SESSION_TYPE="wayland"
 export QT_QPA_PLATFORM="wayland"
 export QT_STYLE_OVERRIDE="kvantum"
+export TERMINAL=/usr/bin/foot
 
 alias xterm="foot"
 
