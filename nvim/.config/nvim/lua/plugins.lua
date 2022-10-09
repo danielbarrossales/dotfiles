@@ -41,14 +41,6 @@ function M.setup()
 			end,
 		}
 
-		-- Startup screen
-		use {
-			"goolord/alpha-nvim",
-			config = function()
-				require("config.alpha").setup()
-			end,
-		}
-
 		-- Git
 		use {
 			"TimUntersberger/neogit",
