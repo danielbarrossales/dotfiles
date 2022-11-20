@@ -150,6 +150,16 @@ function M.setup()
 			}
 		end
 
+		-- Auto pairs
+		use {
+			"windwp/nvim-autopairs",
+			wants = "nvim-treesitter",
+			module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
+			config = function()
+				require("config.autopairs").setup()
+			end,
+		}
+
 		-- Code Completion
 		use {
 			"hrsh7th/nvim-cmp",
@@ -179,6 +189,23 @@ function M.setup()
 				"rafamadriz/friendly-snippets",
 				disable = false,
 			},
+		}
+
+		-- Auto tag
+		use {
+			"windwp/nvim-ts-autotag",
+			wants = "nvim-treesitter",
+			event = "InsertEnter",
+			config = function()
+				require("nvim-ts-autotag").setup { enable = true }
+			end,
+		}
+
+		-- End wise
+		use {
+			"RRethy/nvim-treesitter-endwise",
+			wants = "nvim-treesitter",
+			event = "InsertEnter",
 		}
 
     if packer_bootstrap then
