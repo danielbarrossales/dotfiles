@@ -41,13 +41,6 @@ function M.setup()
   local function plugins(use)
     use { "wbthomason/packer.nvim" }
 
-    -- Colorscheme
-    use {
-      "dracula/vim",
-      config = function()
-        vim.cmd "colorscheme dracula"
-      end,
-    }
 
     -- Startup screen
     use {
@@ -95,11 +88,27 @@ function M.setup()
 
 		use {
 			"nvim-treesitter/nvim-treesitter",
+			opt = true,
+			event = "BufRead",
 			 run = ":TSUpdate",
 			 config = function()
 				 require("config.treesitter").setup()
 			 end,
+			 requires = {
+				{ "nvim-treesitter/nvim-treesitter-textobjects" },
+			 }
 		}
+    -- Colorscheme
+    use {
+      "dracula/vim",
+			after = "nvim-treesitter",
+      config = function()
+        vim.cmd [[ 
+					colorscheme dracula 
+					syntax on
+				]]
+      end,
+    }
 
 		-- File Explorer
 		use {
@@ -153,44 +162,13 @@ function M.setup()
 		-- Auto pairs
 		use {
 			"windwp/nvim-autopairs",
-			wants = "nvim-treesitter",
-			module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
+			after="nvim-treesitter",
+			event= "InsertEnter",
 			config = function()
 				require("config.autopairs").setup()
 			end,
 		}
-
-		-- Code Completion
-		use {
-			"hrsh7th/nvim-cmp",
-			event = "InsertEnter",
-			opt = true,
-			config = function()
-				require("config.cmp").setup()
-			end,
-			wants = { "LuaSnip" },
-			requires = {
-				"hrsh7th/cmp-buffer",
-				"hrsh7th/cmp-path",
-				"hrsh7th/cmp-nvim-lua",
-				"ray-x/cmp-treesitter",
-				"hrsh7th/cmp-cmdline",
-				"saadparwaiz1/cmp_luasnip",
-				"hrsh7th/cmp-calc",
-				"f3fora/cmp-spell",
-				"hrsh7th/cmp-emoji",
-				{
-					"L3MON4D3/LuaSnip",
-					wants = "friendly-snippets",
-					config = function()
-						require("config.luasnip").setup()
-					end,
-				},
-				"rafamadriz/friendly-snippets",
-				disable = false,
-			},
-		}
-
+		
 		-- Auto tag
 		use {
 			"windwp/nvim-ts-autotag",
@@ -206,6 +184,37 @@ function M.setup()
 			"RRethy/nvim-treesitter-endwise",
 			wants = "nvim-treesitter",
 			event = "InsertEnter",
+		}
+
+		-- LSP
+		use {
+			"neovim/nvim-lspconfig",
+			opt = true,
+			event = "BufReadPre",
+			wants = { "nvim-lsp-installer" },
+			config = function()
+				require("config.lsp").setup()
+			end,
+			requires = {
+				"williamboman/nvim-lsp-installer",
+			},
+		}
+
+		-- Completion
+		use {
+			"ms-jpq/coq_nvim",
+			branch = "coq",
+			event = "InsertEnter",
+			opt = true,
+			run = ":COQdeps",
+			config = function()
+				require("config.coq").setup()
+			end,
+			requires = {
+				{ "ms-jpq/coq.artifacts", branch = "artifacts" },
+				{ "ms-jpq/coq.thirdparty", branch = "3p", module = "coq_3p" },
+			},
+			disable = false,
 		}
 
     if packer_bootstrap then
