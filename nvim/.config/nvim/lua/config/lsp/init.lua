@@ -5,8 +5,29 @@ local servers = {
   html = {},
   jsonls = {},
   pyright = {},
-  rust_analyzer = {},
-  sumneko_lua = {},
+  sumneko_lua = {
+    settings = {
+      Lua = {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = "LuaJIT",
+          -- Setup your lua path
+          path = vim.split(package.path, ";"),
+        },
+        diagnostics = {
+          -- Get the language server to recognize the `vim` global
+          globals = { "vim" },
+        },
+        workspace = {
+          -- Make the server aware of Neovim runtime files
+          library = {
+            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+            [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+          },
+        },
+      },
+    },
+  },
   tsserver = {},
   vimls = {},
 }
@@ -22,6 +43,9 @@ local function on_attach(client, bufnr)
 
   -- Configure key mappings
   require("config.lsp.keymaps").setup(client, bufnr)
+
+	-- Configure highlighting
+  require("config.lsp.highlighting").setup(client)
 end
 
 local opts = {
@@ -30,6 +54,9 @@ local opts = {
     debounce_text_changes = 150,
   },
 }
+
+-- Setup LSP handlers
+require("config.lsp.handlers").setup()
 
 function M.setup()
   require("config.lsp.installer").setup(servers, opts)
