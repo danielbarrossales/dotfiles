@@ -159,6 +159,13 @@ function M.setup()
 			}
 		end
 
+		use {
+			'stevearc/dressing.nvim',
+			config = function()
+				require ("config.dressing").setup()
+			end,
+		}
+
 		-- Auto pairs
 		use {
 			"windwp/nvim-autopairs",
@@ -208,7 +215,7 @@ function M.setup()
 			"neovim/nvim-lspconfig",
 			opt = true,
 			event = "BufReadPre",
-			wants = { "nvim-lsp-installer", "neodev.nvim", "coq_nvim", "vim-illuminate" },
+			wants = { "nvim-lsp-installer", "neodev.nvim", "coq_nvim", "vim-illuminate", "null-ls.nvim" },
 			config = function()
 				require("config.lsp").setup()
 			end,
@@ -217,6 +224,7 @@ function M.setup()
 				"folke/neodev.nvim",
 				"ms-jpq/coq_nvim",
 				"RRethy/vim-illuminate",
+				"jose-elias-alvarez/null-ls.nvim",
 			},
 		}
 
@@ -242,6 +250,16 @@ function M.setup()
 				require("lspsaga").setup {}
 			end,
 		}
+
+		use {
+      "lewis6991/gitsigns.nvim",
+      event = "BufReadPre",
+      wants = "plenary.nvim",
+      requires = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("config.gitsigns").setup()
+      end,
+    }
 
 
 		if packer_bootstrap then
