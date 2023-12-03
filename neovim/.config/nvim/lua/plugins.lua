@@ -39,6 +39,7 @@ function M.setup()
 				{"folke/which-key.nvim"},
 			}
 		},
+        "mbbill/undotree",
 	}
 
 	require("lazy").setup(plugins)
