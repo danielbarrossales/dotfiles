@@ -32,7 +32,20 @@ function M.setup()
                     "williamboman/mason-lspconfig.nvim",
                     dependencies = "williamboman/mason.nvim",
                 },
+                {
+                    "folke/neodev.nvim",
+                    config = function()
+                        require("neodev").setup({
+                            library = { plugins = { "nvim-dap-ui" }, types = true },
+                        })
+                    end,
+                }
             },
+        },
+        {
+            "rcarriga/nvim-dap-ui",
+            config = require("config.dapui").setup,
+            dependencies = "mfussenegger/nvim-dap",
         }
     }
 

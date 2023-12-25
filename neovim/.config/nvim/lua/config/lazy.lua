@@ -14,4 +14,8 @@ M.keymaps = {
     }
 }
 
+function M.get_keymaps()
+    return M.keymaps
+end
+
 return M
