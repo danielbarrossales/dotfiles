@@ -36,7 +36,8 @@ function M.setup()
                     "folke/neodev.nvim",
                     config = function()
                         require("neodev").setup({
-                            library = { plugins = { "nvim-dap-ui" }, types = true },
+                            library = { plugins = { "nvim-dap-ui" },
+                            types = true },
                         })
                     end,
                 }
@@ -46,7 +47,7 @@ function M.setup()
             "rcarriga/nvim-dap-ui",
             config = require("config.dapui").setup,
             dependencies = "mfussenegger/nvim-dap",
-        }
+        },
     }
 
     require("lazy").setup(plugins)
