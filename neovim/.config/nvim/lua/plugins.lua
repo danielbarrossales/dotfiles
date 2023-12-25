@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 function M.setup()
 
     local plugins = {
-        { 
+        {
             "folke/which-key.nvim",
             event = "VeryLazy",
             init = function()
@@ -24,6 +24,16 @@ function M.setup()
                 vim.o.timeoutlen = 300
             end,
         },
+        {
+            "neovim/nvim-lspconfig",
+            config = require("config.lsp").setup,
+            dependencies = {
+                {
+                    "williamboman/mason-lspconfig.nvim",
+                    dependencies = "williamboman/mason.nvim",
+                },
+            },
+        }
     }
 
     require("lazy").setup(plugins)
