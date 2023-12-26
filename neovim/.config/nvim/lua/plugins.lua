@@ -72,6 +72,7 @@ function M.setup()
                 })
             end,
         },
+        "RRethy/vim-illuminate",
     }
 
     require("lazy").setup(plugins)

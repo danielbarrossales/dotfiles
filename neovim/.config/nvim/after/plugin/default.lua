@@ -5,6 +5,7 @@ o.expandtab = true
 o.smartindent = true
 o.number = true
 o.relativenumber = true
+o.termguicolors = true
 
 local opt = vim.opt
 opt.colorcolumn = "80"
