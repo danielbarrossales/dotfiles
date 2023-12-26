@@ -3,6 +3,8 @@ o.tabstop = 4
 o.shiftwidth = 4
 o.expandtab = true
 o.smartindent = true
+o.number = true
+o.relativenumber = true
 
 local opt = vim.opt
 opt.colorcolumn = "80"
