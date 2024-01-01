@@ -2,6 +2,7 @@ local M = {}
 
 function M.setup()
     local cmp = require'cmp'
+    local luasnip = require'luasnip'
 
     vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
 
@@ -23,9 +24,15 @@ function M.setup()
             documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
-            ['<tab>'] = cmp.mapping.select_next_item({
-                behavior = cmp.SelectBehavior.Insert
-            }),
+            ['<tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                    luasnip.expand_or_jump()
+                else
+                    fallback()
+                end
+            end, { "i", "s" }),
             ['<S-tab>'] = cmp.mapping.select_prev_item({
                 behavior = cmp.SelectBehavior.Insert
             }),
