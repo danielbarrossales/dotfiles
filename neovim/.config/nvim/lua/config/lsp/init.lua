@@ -23,6 +23,8 @@ function M.setup()
                 return true
             end
         },
+        vtsls = {},
+        vuels = {}
     }
 
     require("mason").setup()
