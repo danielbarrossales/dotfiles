@@ -16,6 +16,7 @@ function M.setup()
         "config.lazy",
         "config.dapui",
         "config.bufferline",
+        "config.nvim-tree",
     }
 
     for _, plugin_config in ipairs(plugins_configs) do

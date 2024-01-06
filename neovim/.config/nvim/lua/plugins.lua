@@ -88,8 +88,12 @@ function M.setup()
                 "L3MON4D3/LuaSnip",
                 "saadparwaiz1/cmp_luasnip"
             },
-        }
-
+        },
+        {
+            "nvim-tree/nvim-tree.lua",
+            dependencies = "nvim-tree/nvim-web-devicons",
+            config = require('config.nvim-tree').setup,
+        },
     }
 
     require("lazy").setup(plugins)
