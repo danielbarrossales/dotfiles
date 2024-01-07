@@ -94,6 +94,19 @@ function M.setup()
             dependencies = "nvim-tree/nvim-web-devicons",
             config = require('config.nvim-tree').setup,
         },
+        {
+            "ahmedkhalf/project.nvim",
+            config = require("config.project").setup,
+
+        },
+        {
+            "nvim-telescope/telescope.nvim",
+            dependencies= {
+                "nvim-lua/plenary.nvim",
+                "ahmedkhalf/project.nvim"
+            },
+            config = require("config.telescope"),
+        },
     }
 
     require("lazy").setup(plugins)
