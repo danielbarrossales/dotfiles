@@ -19,7 +19,7 @@ function M.get_keymaps()
                 t = { "<cmd>NvimTreeToggle<cr>", "Nvim-Tree Toggle" },
             },
         },
-        opts = {}
+        opts = { prefix = "<leader>" }
     }
 end
 
