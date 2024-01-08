@@ -105,12 +105,22 @@ function M.setup()
                 "nvim-lua/plenary.nvim",
                 "ahmedkhalf/project.nvim"
             },
-            config = require("config.telescope"),
+            config = require("config.telescope").setup,
         },
         {
             "windwp/nvim-autopairs",
             config = function() require("nvim-autopairs").setup {} end,
-        }
+        },
+        {
+            "nvim-treesitter/nvim-treesitter",
+            build = ":TSUpdate",
+            config = require("config.treesitter").setup
+        },
+        {
+            "nvim-treesitter/nvim-treesitter-textobjects",
+            dependencies = "nvim-treesitter/nvim-treesitter",
+        },
+
     }
 
     require("lazy").setup(plugins)
