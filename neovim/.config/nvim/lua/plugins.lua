@@ -107,6 +107,10 @@ function M.setup()
             },
             config = require("config.telescope"),
         },
+        {
+            "windwp/nvim-autopairs",
+            config = function() require("nvim-autopairs").setup {} end,
+        }
     }
 
     require("lazy").setup(plugins)
