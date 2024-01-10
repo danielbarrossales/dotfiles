@@ -24,7 +24,8 @@ function M.setup()
             end
         },
         vtsls = {},
-        vuels = {}
+        vuels = {},
+        omnisharp = {},
     }
 
     require("mason").setup()
@@ -39,6 +40,60 @@ function M.setup()
         config.capabilities = capabilities
         lspconfig[server_name].setup(config)
     end
+end
+
+function M.get_keymaps()
+    local telescope = require("telescope.builtin");
+    local reuse_win = { reuse_win = true }
+    return {
+        {
+            keymaps = {
+                c = {
+                    name = "Code",
+                    a = { vim.lsp.buf.code_action, "Code Actions" },
+                    l = { "<cmd>LspInfo<cr>", "Lsp Info" },
+                },
+            },
+            opts = { prefix = "<leader>" }
+        },
+        {
+            keymaps = {
+                g = {
+                    d = {
+                        function()
+                            telescope.lsp_definitions(reuse_win)
+                        end,
+                        "Goto Definition"
+                    },
+                    r = {
+                        telescope.lsp_references, "References"
+                    },
+                    D = { vim.lsp.buf.declaration, "Goto Declaration" },
+                    I = {
+                        function ()
+                            telescope.lsp_implementations(reuse_win)
+                        end,
+                        "Goto Implementations",
+                    },
+                    y = {
+                        function ()
+                            telescope.lsp_type_definitions(reuse_win)
+                        end,
+                        "Goto T[y]pe Definition"
+                    },
+                    K = { vim.lsp.buf.signature_help, "Signature Help" },
+                },
+                K = { vim.lsp.buf.hover, "Hover" },
+            },
+            opts = {}
+        },
+        {
+            keymaps = {
+                ['c-k'] = { vim.lsp.buf.signature_help, "Signature Help" },
+            },
+            opts = { mode = "i" },
+        }
+    }
 end
 
 return M

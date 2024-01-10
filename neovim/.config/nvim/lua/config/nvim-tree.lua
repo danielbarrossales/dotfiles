@@ -13,13 +13,15 @@ end
 
 function M.get_keymaps()
     return {
-        keymaps = {
-            n = {
-                name = "Nvim Tree",
-                t = { "<cmd>NvimTreeToggle<cr>", "Nvim-Tree Toggle" },
+        {
+            keymaps = {
+                n = {
+                    name = "Nvim Tree",
+                    t = { "<cmd>NvimTreeToggle<cr>", "Nvim-Tree Toggle" },
+                },
             },
-        },
-        opts = { prefix = "<leader>" }
+            opts = { prefix = "<leader>" }
+        }
     }
 end
 

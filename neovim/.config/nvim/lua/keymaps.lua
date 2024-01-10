@@ -3,8 +3,10 @@ local M = {}
 local function setup_plugin_keymap(wk, plugin_name)
     local ok, mod = pcall(require, "config." .. plugin_name)
     if ok and mod.get_keymaps then
-        local keymap_config = mod.get_keymaps()
-        wk.register(keymap_config.keymaps, keymap_config.opts)
+        local keymaps_configs = mod.get_keymaps()
+        for _, keymap_config in ipairs(keymaps_configs) do
+            wk.register(keymap_config.keymaps, keymap_config.opts)
+        end
     end
 end
 
@@ -19,6 +21,7 @@ function M.setup()
         "nvim-tree",
         "project",
         "telescope",
+        "lsp"
     }
 
     for _, plugin_config in ipairs(plugins_configs) do
