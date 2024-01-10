@@ -120,7 +120,12 @@ function M.setup()
             "nvim-treesitter/nvim-treesitter-textobjects",
             dependencies = "nvim-treesitter/nvim-treesitter",
         },
-
+        {
+            "smjonas/inc-rename.nvim",
+            config = function()
+                require("inc_rename").setup()
+            end,
+        }
     }
 
     require("lazy").setup(plugins)

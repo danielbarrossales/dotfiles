@@ -45,6 +45,8 @@ end
 function M.get_keymaps()
     local telescope = require("telescope.builtin");
     local reuse_win = { reuse_win = true }
+
+    local inc_rename = require "inc_rename"
     return {
         {
             keymaps = {
@@ -55,6 +57,22 @@ function M.get_keymaps()
                 },
             },
             opts = { prefix = "<leader>" }
+        },
+        {
+            keymaps = {
+                c = {
+                    r = {
+                        function ()
+                            return ":" ..
+                            inc_rename.config.cmd_name ..
+                            " " ..
+                            vim.fn.expand("<cword>")
+                        end,
+                        "Rename"
+                    }
+                }
+            },
+            opts = { prefix = "<leader>", expr = true }
         },
         {
             keymaps = {
