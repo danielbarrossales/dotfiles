@@ -1,8 +1,16 @@
-local M = {}
+return 
+{
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+        vim.o.timeout = true
+        vim.o.timeoutlen = 300
+    end,
+    config = function ()
+        local wk = require("which-key")
+        wk.setup()
 
-M.keymap_config = {
-    {
-        keymaps = {
+        wk.register({
             z = {
                 name = "Lazy",
                 i = { "<cmd>Lazy install<cr>", "Lazy Install" },
@@ -13,13 +21,10 @@ M.keymap_config = {
                 w = { "<cmd>Lazy show<cr>", "Lazy Show" },
                 l = { "<cmd>Lazy log<cr>", "Lazy log" },
                 k = { "<cmd>Lazy check<cr>", "Lazy check" },
-            }
-        }, opts = { prefix = "<leader>" }
-    }
+            },
+            c = { name = "Code" },
+            f = { name = "Find" },
+        }, { prefix = "<leader>" }
+        )
+    end,
 }
-
-function M.get_keymaps()
-    return M.keymap_config
-end
-
-return M
