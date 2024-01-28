@@ -22,15 +22,15 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {}
 
-local filesOut = io.popen('ls lua/plugins')
+local filesOut = io.popen('ls ' .. vim.fn.stdpath('config') .. '/lua/plugins')
 
 if filesOut then
     for file in filesOut:lines() do
-        if file:match("%.lua$") then
-            local moduleName = file
+        local moduleName = file:match("[^/]*.lua$")
+        if moduleName then
             table.insert(
-            plugins,
-            require("plugins." .. moduleName:gsub("%.lua$", "")))
+                plugins,
+                require("plugins." .. moduleName:gsub("%.lua$", "")))
         end
     end
 end
