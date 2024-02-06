@@ -3,7 +3,7 @@ return
     "nvim-telescope/telescope.nvim",
     dependencies= {
         "nvim-lua/plenary.nvim",
-        "ahmedkhalf/project.nvim"
+        "ahmedkhalf/project.nvim",
     },
     opts = {},
     config = function(_, opts)
