@@ -23,7 +23,7 @@ return
         { "<S-h>", "<cmd>BufferLineCycleWindowlessPrev<cr>", desc = "Previous Tab", mode = "n", noremap = true, silent = true },
         { "<S-t>", "<cmd>BufferLineCycleWindowlessToggle<cr>", desc = "Toggle Tab", mode = "n", noremap = true, silent = true },
         { "<S-p>", "<cmd>BufferLinePickClose<cr>", desc = "Pick Close Buffer", mode = "n", noremap = true, silent = true },
-        { "<S-o>", "<cmd>BufferLineCloseOthers<cr>", desc = "Close Others Buffers", mode = "n", noremap = true, silent = true },
+        { "<S-e>", "<cmd>BufferLineCloseOthers<cr>", desc = "Close Others Buffers", mode = "n", noremap = true, silent = true },
         { "<leader>bk", "<cmd>bp | sp | bn | bd<cr>", desc = "Close Current Buffer", mode = "n", noremap = true, silent = true },
     },
     lazy = false,
