@@ -17,8 +17,8 @@ return {
             \ call append(0,[
             \ "# " . split(expand('%:r'),'/')[-1], "***",
             \ "## Thoughts and Feelings", "* ",
-            \ "## Five Things I'm Grateful For || project:personal.daily due:eod +private", "1. ",
-            \ "## Todays Objectives",  "* ",
+            \ "## Five Things I'm Grateful For", "1. ",
+            \ "## Today's Objectives || project:personal.daily due:eod +private",  "* ",
             \ "## Daily Review",
             \ "### What went well?",  "* ",
             \ "### What didn't go to plan?",  "* ",
