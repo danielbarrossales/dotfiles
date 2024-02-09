@@ -24,5 +24,11 @@ return {
             }
         end,
         dependencies = { {'nvim-tree/nvim-web-devicons'}}
+    },
+    -- Statusline
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        opts = {},
     }
 }
