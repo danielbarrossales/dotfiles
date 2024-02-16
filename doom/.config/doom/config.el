@@ -42,8 +42,12 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
 (setq org-roam-directory "~/Documents/org/roam/")
-
-
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "** %?"
+         :target (file+head+olp "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n- \n** What would make today great?\n- \n* Daily Goals\n- [ ] Goal 1\n- [ ] Goal 2\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
+                                ("Notes")))))
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
