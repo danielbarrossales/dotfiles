@@ -6,12 +6,13 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
+;; (setq user-e "John Doe"
 ;;       user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use
+(setq doom-font (font-spec :size 16))
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
@@ -42,12 +43,15 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
 (setq org-roam-directory "~/Documents/org/roam/")
+(setq org-agenda-files (list org-directory org-roam-directory (concat org-roam-directory "daily/")))
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry
          "** %?"
          :target (file+head+olp "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n- \n** What would make today great?\n- \n* Daily Goals\n- [ ] Goal 1\n- [ ] Goal 2\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
+                                "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n- \n** What would make today great?\n- \n* TODO Daily Goals [/]\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
                                 ("Notes")))))
+(map! :leader
+      :desc "Insert TODO subheading" "n T" #'org-insert-todo-subheading)
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
