@@ -36,4 +36,4 @@ if filesOut then
 end
 
 require('lazy').setup(plugins)
-
+require("config.keymaps").setup()
