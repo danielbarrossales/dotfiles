@@ -40,6 +40,7 @@ return {
             config.capabilities = capabilities
             lspconfig[server_name].setup(config)
         end
+        vim.diagnostic.config { update_in_insert= true }
     end,
     dependencies = {
         {
