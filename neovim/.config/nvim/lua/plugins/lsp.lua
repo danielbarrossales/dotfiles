@@ -26,6 +26,17 @@ return {
             vtsls = {},
             vuels = {},
             omnisharp = {},
+            rust_analyzer = {
+                settings = {
+                    ['rust-analyzer'] = {
+                        diagnostics = {
+                            disabled = {
+                                "unresolved-proc-macro",
+                            },
+                        },
+                    },
+                },
+            },
         }
 
         require("mason").setup()
@@ -60,6 +71,7 @@ return {
             }
         },
         "hrsh7th/cmp-nvim-lsp",
+        "udalov/kotlin-vim",
     },
     keys = function ()
         return {

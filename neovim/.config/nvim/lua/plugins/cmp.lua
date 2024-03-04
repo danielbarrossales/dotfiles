@@ -9,16 +9,45 @@ return
             'hrsh7th/cmp-cmdline',
             dependencies = { "rafamadriz/friendly-snippets" },
         },
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip"
+        {
+            "L3MON4D3/LuaSnip",
+            build = (not jit.os:find("Windows"))
+                and "echo 'jsregexp is optional'; make install_jsregexp"
+                or nil,
+            dependencies = {
+                "rafamadriz/friendly-snippets",
+                config = function()
+                    require("luasnip.loaders.from_vscode").lazy_load()
+                end,
+            },
+            opts = {
+                history = true,
+                delete_check_events = "TextChanged",
+            }
+
+        },
+        "saadparwaiz1/cmp_luasnip",
+        "onsails/lspkind.nvim",
     },
     opts = function ()
         local cmp = require'cmp'
         local luasnip = require'luasnip'
         local defaults = require("cmp.config.default")()
         vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+        local lspkind = require "lspkind"
 
         return {
+            formatting = {
+                format = lspkind.cmp_format({
+                    mode = 'symbol_text', -- show only symbol annotations
+                    maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                    -- can also be a function to dynamically calculate max width such as 
+                    -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
+                    ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                    show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+
+                })
+            },
             completion = {
                 completeopt = "menu,menuone,noinsert",
             },
