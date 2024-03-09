@@ -15,8 +15,8 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.termguicolors = true
 opt.signcolumn = "yes"
+opt.clipboard = "unnamedplus"
 opt.background = "dark"
 opt.backspace = "indent,eol,start"
-opt.clipboard:append("unnamedplus")
 
 opt.iskeyword:append("-")
