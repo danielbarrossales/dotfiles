@@ -29,31 +29,23 @@ return {
     {
         "WnP/vimwiki_markdown"
     },
-    {
-        "zk-org/zk-nvim",
-        dependencies = "nvim-telescope/telescope.nvim",
-        opts = {},
-        config = function(_, config)
-            require("zk").setup(config)
-            require("telescope").load_extension("zk")
-        end,
-        init = function ()
-            vim.cmd[[
-                " markdownWikiLink is a new region
-                    syn region markdownWikiLink matchgroup=markdownLinkDelimiter start="\[\[" end="\]\]" contains=markdownUrl keepend oneline concealends
-                    " markdownLinkText is copied from runtime files with 'concealends' appended
-                    syn region markdownLinkText matchgroup=markdownLinkTextDelimiter start="!\=\[\%(\%(\_[^][]\|\[\_[^][]*\]\)*]\%( \=[[(]\)\)\@=" end="\]\%( \=[[(]\)\@=" nextgroup=markdownLink,markdownId skipwhite contains=@markdownInline,markdownLineStart concealends
-                    " markdownLink is copied from runtime files with 'conceal' appended
-                    syn region markdownLink matchgroup=markdownLinkDelimiter start="(" end=")" contains=markdownUrl keepend contained conceal
-            ]]
-        end,
-    },
     "tools-life/taskwiki",
     {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
+    },
+    {
+      "michal-h21/vim-zettel",
+      init = function()
+        local g = vim.g
+        g.zettel_format = "%y%m%d-%H%M_%title"
+      end,
+      dependencies = {
+        "junegunn/fzf.vim",
+        "junegunn/fzf",
+        "vimwiki/vimwiki",
+      }
     }
-
 }
