@@ -7,6 +7,11 @@ return
             require("nvim-tree").setup(opts)
         end,
         opts = {
+            actions = {
+              open_file = {
+                quit_on_open = true,
+              }
+            },
             sort = {
                 sorter = "case_sensitive",
             },
