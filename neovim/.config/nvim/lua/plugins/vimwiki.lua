@@ -46,6 +46,26 @@ return {
         "junegunn/fzf.vim",
         "junegunn/fzf",
         "vimwiki/vimwiki",
-      }
+      },
+      keys = function ()
+        local function createZettel()
+          local userInput = vim.fn.input('Enter title for new Zettel: ')
+          vim.cmd('ZettelNew ' .. userInput)
+        end
+
+        return {
+          { "<leader>wzn", createZettel, { desc = "Create new Zettel" }},
+          { "<CR>", "<Cmd>lua vim.lsp.buf.definition()<CR>" },
+          { "<leader>wzo", "<CMD>ZettelOpen<CR>" },
+          { "<leader>wzi", "<CMD>ZettelInsert<CR>" },
+          { "<leader>wzc", "<CMD>ZettelCapture<CR>" },
+          { "<leader>wzb", "<CMD>ZettelBackLinks<CR>" },
+          { "<leader>wzx", "<CMD>ZettelInbox<CR>" },
+          { "<leader>wzl", "<CMD>ZettelGenerateLinks<CR>" },
+          { "<leader>wzt", "<CMD>ZettelGenerateTags<CR>" },
+          { "<LEADER>wzs", "<CMD>ZettelSearch<CR>" },
+          { "<LEADER>wzy", "<CMD>ZettelYankName<CR>" },
+        }
+      end,
     }
-}
+  }
