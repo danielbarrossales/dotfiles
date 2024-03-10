@@ -22,7 +22,7 @@ return {
             \ "## Daily Review",
             \ "### What went well?",  "* ",
             \ "### What didn't go to plan?",  "* ",
-            \ "### What did I lean?",  "* " ])
+            \ "### What did I learn?",  "* " ])
             ]]
         end,
     },
