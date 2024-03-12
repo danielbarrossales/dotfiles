@@ -22,7 +22,13 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {}
 
-local filesOut = io.popen('ls ' .. vim.fn.stdpath('config') .. '/lua/plugins')
+local sep = package.config:sub(1,1)
+local isNotWindows = sep ~= "\\"
+
+local listCommand = isNotWindows and "ls " or "dir /b "
+
+local filesOut = io.popen(listCommand .. vim.fn.stdpath('config') .. sep ..
+          'lua' .. sep .. 'plugins')
 
 if filesOut then
     for file in filesOut:lines() do
