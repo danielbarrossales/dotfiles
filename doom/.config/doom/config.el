@@ -48,7 +48,7 @@
       '(("d" "default" entry
          "** %?"
          :target (file+head+olp "%<%Y-%m-%d>.org"
-                                "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n- \n** What would make today great?\n- \n* TODO Daily Goals [/]\nDEADLINE:%<%Y-%m-%d>%\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
+                                "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n1. \n** What would make today great?\n- \n* TODO Daily Goals [/]\nDEADLINE:%<%Y-%m-%d>\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
                                 ("Notes")))))
 (map! :leader
       :desc "Insert TODO subheading" "n t" #'org-insert-todo-subheading)
