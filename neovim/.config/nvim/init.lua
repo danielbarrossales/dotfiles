@@ -1,6 +1,4 @@
 local g = vim.g
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
 g.maplocalleader = " "
 g.mapleader = " "
 
@@ -42,4 +40,4 @@ if filesOut then
 end
 
 require('lazy').setup(plugins)
-require("config.keymaps").setup()
+require("config.keymaps")
