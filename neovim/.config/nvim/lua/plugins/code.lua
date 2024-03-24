@@ -41,6 +41,7 @@ return {
 					"lua_ls",
 					"jdtls",
 					"rust_analyzer",
+                    "texlab",
 				},
 				handlers = {
 					lsp.default_setup,
@@ -70,5 +71,16 @@ return {
 			"hrsh7th/cmp-nvim-lua",
 			{"L3MON4D3/LuaSnip", dependencies = "rafamadriz/friendly-snippets" },
 		}
-	}
-}
+	},
+    {
+        "frabjous/knap",
+        init = function ()
+            vim.cmd[[
+            let g:knap_settings = {
+                \ "textopdfviewerlaunch": "zathura --synctex-editor-command 'nvim --headless -es --cmd \"lua require('\"'\"'knaphelper'\"'\"').relayjump('\"'\"'%servername%'\"'\"','\"'\"'%{input}'\"'\"',%{line},0)\"' %outputfile%",
+                \ "textopdfviewerrefresh": "none",
+                \ "textopdfforwardjump": "zathura --synctex-forward=%line%:%column%:%srcfile% %outputfile%"
+                \ }]]
+            end
+        },
+    }
