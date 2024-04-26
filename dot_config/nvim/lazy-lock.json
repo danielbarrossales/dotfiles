@@ -7,6 +7,8 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
   "friendly-snippets": { "branch": "main", "commit": "ea068f1becd91bcd4591fceb6420d4335e2e14d3" },
+  "fzf": { "branch": "master", "commit": "e352b6887849cb6c3c8ae1d98ed357f94273e90a" },
+  "fzf.vim": { "branch": "master", "commit": "45d96c9cb1213204479593236dfabf911ff15443" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
   "knap": { "branch": "main", "commit": "d4ea571d2d4e139d288b758c5bab31788d30eea3" },
   "lazy.nvim": { "branch": "main", "commit": "3f13f080434ac942b150679223d54f5ca91e0d52" },
@@ -29,6 +31,7 @@
   "undotree": { "branch": "master", "commit": "56c684a805fe948936cda0d1b19505b84ad7e065" },
   "vim-beancount": { "branch": "master", "commit": "25bcbc773554b5798d253a1a5fa5de158792f95e" },
   "vim-fugitive": { "branch": "master", "commit": "dac8e5c2d85926df92672bf2afb4fc48656d96c7" },
+  "vim-zettel": { "branch": "master", "commit": "c0230fb9f3d0f4aa10c6598549a733e20eeaa92f" },
   "vimwiki": { "branch": "dev", "commit": "69318e74c88ef7677e2496fd0a836446ceac61e8" },
   "vimwiki_markdown": { "branch": "master", "commit": "6d8c3f5cb50182cc1e0bc668f50c02401526ba9d" },
   "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" }
