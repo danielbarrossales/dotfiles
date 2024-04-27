@@ -18,7 +18,7 @@ return {
             \ "## Daily Review",
             \ "### What went well?",  "* ", "",
             \ "### What didn't go to plan?",  "* ", "",
-            \ "### What did I learn?",  "* ", "" ])
+            \ "### What did I learn?",  "* " ])
             ]])
             vim.cmd[[
             set nocompatible
