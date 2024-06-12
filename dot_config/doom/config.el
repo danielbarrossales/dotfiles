@@ -6,13 +6,13 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-;; (setq user-e "John Doe"
+;; (setq user-full-name "John Doe"
 ;;       user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
-;; - `doom-font' -- the primary font to use
 (setq doom-font (font-spec :size 16))
+;; - `doom-font' -- the primary font to use
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
@@ -48,10 +48,11 @@
       '(("d" "default" entry
          "** %?"
          :target (file+head+olp "%<%Y-%m-%d>.org"
-                                "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n1. \n** What would make today great?\n- \n* TODO Daily Goals [/]\nDEADLINE:%<%Y-%m-%d>\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
+                                "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n1. \n** What would make today great?\n- \n* Today's 5 Objectives [/]\n- [ ] \n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
                                 ("Notes")))))
 (map! :leader
       :desc "Insert TODO subheading" "n t" #'org-insert-todo-subheading)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -83,8 +84,13 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+(setq +latex-viewers '(pdf-tools))
+;; Load Org Babel support for Clojure
+(require 'ob-clojure)
+(require 'cider)
 
-(when (getenv "WAYLAND_DISPLAY")
-  (setq interprogram-paste-function
-        (lambda ()
-          (shell-command-to-string "wl-paste -n | tr -d '\r'"))))
+;; Use CIDER as the Clojure interpreter
+(setq org-babel-clojure-backend 'cider)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((clojure . t)))
