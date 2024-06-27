@@ -50,3 +50,6 @@
 ;; (unpin! t)
 
 (package-install 'cider)
+
+(package-install 'exec-path-from-shell)
+(package-install 'org-auto-tangle)
