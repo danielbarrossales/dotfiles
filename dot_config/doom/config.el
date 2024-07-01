@@ -46,9 +46,9 @@
 (setq org-agenda-files (list org-directory org-roam-directory (concat org-roam-directory "daily/")))
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry
-         "* %<%H:%M> %?"
+         "* %<%H:%M> - %?"
          :target (file+head+olp "%<%Y-%m-%d>.org"
-
+                                "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n1. \n** What would make today great?\n- \n* TODO Daily Goals [/]\nDEADLINE:%<%Y-%m-%d>\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
                                 ("Notes")))))
 (map! :leader
       :desc "Insert TODO subheading" "n t" #'org-insert-todo-subheading)
@@ -106,31 +106,13 @@
   :config (setq org-auto-tangle-default t))
 
 
-;;(after! lsp-java
-;;  (setq lsp-java-vmargs
-;;        (list
-;;         "-noverify"
-;;         "-Xmx1G"
-;;         "-XX:+UseG1GC"
-;;         "-XX:+UseStringDeduplication"
-;;         (concat "-javaagent:" (expand-file-name "~/.config/emacs/etc/lombok/lombok.jar"))
-;;         (concat "-Xbootclasspath/a:" (expand-file-name "~/.config/emacs/etc/lombok/lombok.jar"))))
-;;  ;; Ensure Lombok jar is downloaded if not already
-;;  (unless (file-exists-p (expand-file-name "~/.config/emacs/etc/lombok/lombok.jar"))
-;;    (url-copy-file "https://projectlombok.org/downloads/lombok.jar" "~/.config/emacs/etc/lombok/lombok.jar")))
-;; Java Configuration
-
 (setq display-line-numbers-type 'relative) ;
 
 (after! lsp-java
-
   (setq lombok-library-path (concat doom-data-dir "lombok.jar"))
-
   (unless (file-exists-p lombok-library-path)
     (url-copy-file "https://projectlombok.org/downloads/lombok.jar" lombok-library-path))
-
   (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx4G" "-Xms100m"))
-
   (push (concat "-javaagent:"
                 (expand-file-name lombok-library-path))
         lsp-java-vmargs)
