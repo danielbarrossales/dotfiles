@@ -53,3 +53,4 @@
 
 (package-install 'exec-path-from-shell)
 (package-install 'org-auto-tangle)
+(package-install 'vue-mode)

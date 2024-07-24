@@ -105,6 +105,7 @@
   :hook (org-mode . org-auto-tangle-mode)
   :config (setq org-auto-tangle-default t))
 
+(use-package vue-mode)
 
 (setq display-line-numbers-type 'relative) ;
 
