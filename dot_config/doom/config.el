@@ -45,7 +45,7 @@
 (setq org-roam-directory "~/Documents/org/roam/")
 (setq org-agenda-files (list org-directory org-roam-directory (concat org-roam-directory "daily/")))
 (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry
+      '(("d" "default" enrry
          "* %<%H:%M> - %?"
          :target (file+head+olp "%<%Y-%m-%d>.org"
                                 "%<%Y-%m-%d>\n\n* Morning Reflections\n** Five Things I'm Grateful For Today\n1. \n** What would make today great?\n- \n* Daily Goals [/]\nDEADLINE:%<%Y-%m-%d>\n* Evening Reflections\n** What went well today?\n- \n** How could I have made today better?\n- \n* Notes"
