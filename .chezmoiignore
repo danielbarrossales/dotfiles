@@ -1,0 +1,11 @@
+{{- if eq .chezmoi.hostname "serpro-2005983" }}
+.taskrc
+.zshenv
+.config/doom
+.config/foot
+.config/gammastep
+.config/hypr
+.config/nvim
+.config/waybar
+.config/zsh
+{{- end }}
