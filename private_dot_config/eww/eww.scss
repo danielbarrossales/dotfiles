@@ -1,0 +1,88 @@
+/* Created   by https://github.com/rxyhn 
+   Designed  by https://github.com/rxyhn
+   Maintaned by https://github.com/rxyhn
+*/
+
+// Global
+*{
+  all: unset;
+}
+
+// Variable Color's
+$background: #1A1B26;
+$foreground: #A9B1D6;
+
+$black: #24283B;
+$gray: #565F89;
+$red: #F7768E;
+$green: #73DACA;
+$yellow: #E0AF68;
+$blue: #7AA2F7;
+$magenta: #BB9AF7;
+$cyan: #7DCFFF;
+$white: $foreground;
+
+// EWW BAR
+.eww_bar{
+  background-color: $background;
+  padding: .3rem;
+}
+// Workspaces
+.works {
+font-family: "Font Awesome 6 Pro";
+padding: .2rem .7rem .2rem .7rem;
+background-color: $black;
+border-radius: 5px;
+}
+
+._0 , ._01, ._02, ._03, ._04, ._05, ._06,
+._011, ._022, ._033, ._044, ._055, ._066{
+  margin: .55rem 0 .55rem 0;
+  font-size: 1.5rem;
+}
+
+/* Unoccupied */
+._0 {
+color: $gray;
+}
+
+/* Occupied */
+._01, ._02, ._03, ._04, ._05, ._06 {
+  color: $gray;
+}
+
+/* Focused */
+._011,
+._022,
+._033,
+._044,
+._055,
+._066 {
+  color: $foreground;
+}
+// Clock
+.time {
+  font-family: Comic Mono;
+  font-weight: bold;
+  font-size: 1.2em;
+  background-color: $black;
+  color: $white;
+  border-radius: 5px;
+  padding: .7rem 0 .5rem 0;
+  margin: .5rem 0 .5rem 0;
+}
+
+menu {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: $background;
+  color: #fff;
+
+  menuitem {
+    border-radius: 5px;
+    padding: 8px 12px;
+  }
+  menuitem:hover {
+    background-color: $blue;
+  }
+}
