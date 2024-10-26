@@ -22,7 +22,7 @@ return
     'nvim-telescope/telescope.nvim', branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
       "ahmedkhalf/project.nvim"
     },
@@ -44,13 +44,15 @@ return
         },
       }
     end,
-    opts = {
-      extensions = {
-        ['ui-select'] = {
-          require('telescope.themes').get_cursor{},
-        },
-      },
-    }
+    opts = function()
+        return {
+            extensions = {
+                ['ui-select'] = {
+                    require('telescope.themes').get_cursor{},
+                },
+           },
+        }
+    end,
   },
   {
     "folke/tokyonight.nvim",
