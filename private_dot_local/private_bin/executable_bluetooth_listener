@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+import dbus
+import dbus.mainloop.glib
+import subprocess
+import sys
+import gi
+
+gi.require_version('GLib', '2.0')
+from gi.repository import GLib
+
+ERROR_PATTERNS = [
+    "RFCOMM receive command but modem not available"
+]
+
+def check_for_error():
+    try:
+        result = subprocess.run(
+            ['journalctl', '--user', '-u', 'wireplumber.service', '-n', '100'],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        
+        if any(pattern in result.stdout for pattern in ERROR_PATTERNS):
+            print("Error detected. Restarting WirePlumber...")
+            subprocess.run(['systemctl', '--user', 'restart', 'wireplumber'])
+    except subprocess.CalledProcessError as e:
+        print(f"Error checking logs: {e}", file=sys.stderr)
+
+def properties_changed(interface, changed, invalidated):
+    if 'Connected' in changed and changed['Connected']:
+        print("Bluetooth device connected. Checking for errors...")
+        check_for_error()
+
+def main():
+    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+    bus = dbus.SystemBus()
+
+    try:
+        bus.add_signal_receiver(
+            properties_changed,
+            dbus_interface='org.freedesktop.DBus.Properties',
+            signal_name='PropertiesChanged',
+            path='/org/bluez/hci0/dev_70_50_E7_79_19_82'
+        )
+    except Exception as e:
+        print(f"Error setting up D-Bus listener: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    print("Listening for Bluetooth connections...")
+    
+    loop = GLib.MainLoop()
+    loop.run()
+
+if __name__ == "__main__":
+    main()
+
