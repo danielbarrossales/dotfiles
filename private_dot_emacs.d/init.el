@@ -160,6 +160,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
+  (setq evil-want-clipboard t)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -171,8 +172,7 @@
   (evil-global-set-key 'normal (kbd "g:") 'execute-extended-command)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal)
-)
+  (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-collection
   :after evil
@@ -255,7 +255,10 @@
   (org-agenda-files  '("~/org/roam"))
   (org-agenda-start-time-with-log-mode t)
   (org-log-done 'time)
-  (org-log-into-drawer t))
+  (org-log-into-drawer t)
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(N)" "|" "DONE(d!)")
+     (sequence "BACKLOG(b)" "PLAN(p)" "READR(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANCELED(k@)"))))
 
 ;; (with-eval-after-load 'org-agenda
 ;;   (evil-define-key 'emacs org-agenda-mode-map
