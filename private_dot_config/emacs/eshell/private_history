@@ -1,0 +1,18 @@
+dnf search colorscript
+ll
+ls
+clear
+mkdir themes
+cp ~/Downloads/madrid-theme.el ./themes/
+ls themes/
+sudo systemctl restart smb
+systemctl restart smb
+sudo dnf install luacheck
+sudo dnf search luacheck
+sudo install luarocks
+sudo dnf install luarocks
+sudo luarocks install luacheck
+dnf search vterm
+sudo dnf install libvterm
+exit
+sudo dnf install libvterm-tools libvterm-devel
