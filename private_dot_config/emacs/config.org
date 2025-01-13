@@ -521,6 +521,7 @@ Org-tempo is a org-mode module that for the expoansion of some simple two charac
   :config
   (setq org-roam-directory (file-truename "~/Documentos/org/roam")
         org-roam-completion-everywhere t)
+  (evil-define-key 'normal org-mode-map "\t" 'org-cycle)
   (org-roam-db-autosync-mode)
   :bind (("C-M-i" . completion-at-point)))
 #+end_src
