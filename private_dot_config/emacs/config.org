@@ -79,6 +79,7 @@
   :after evil
   :config
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
+  (evil-define-key 'normal org-mode-map "\t" 'org-cycle)
   (evil-collection-init))
 (use-package evil-tutor)
 
