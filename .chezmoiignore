@@ -1,2 +1,7 @@
-LICENSE
-README.md
+{{- if eq .chezmoi.hostname "serpro-2005983" }}
+.config/gammastep
+.config/hypr
+.config/waybar
+.config/swaync
+.config/eww
+{{- end }}
