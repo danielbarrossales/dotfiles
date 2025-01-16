@@ -462,105 +462,124 @@ This package implements hiding or abbreviation of the modeline displays (lighter
   :config
   (exec-path-from-shell-initialize))
 #+end_src
-** Languages
+** LSP
 Emacs has built-in programming language modes for several languages. Other languages will require you to install additional modes.
 
 #+begin_src emacs-lisp
 (use-package gdscript-mode
   :ensure '(gdscript-mode :host github :repo "godotengine/emacs-gdscript-mode"))
+
 (use-package lsp-mode
-      :diminish "LSP"
-      :ensure t
-      :after company
+  :preface
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or
+     (when (equal (following-char) ?#)
+       (let ((bytecode (read (current-buffer))))
+	 (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
+     (apply old-fn args)))
 
-      :hook ((lsp-mode . lsp-diagnostics-mode)
-             (lsp-mode . lsp-enable-which-key-integration)
-             ((tsx-ts-mode
-               typescript-ts-mode
-               js-ts-mode) . lsp-deferred))
-      :custom
-      (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
-      (lsp-diagnostics-provider :flycheck)
-      (lsp-session-file (locate-user-emacs-file ".lsp-session"))
-      (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
-      (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
-      (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
-      ;; core
-      (lsp-auto-configure t)                ; Used to decide between current active servers
-      (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
-      (lsp-enable-dap-auto-configure t)     ; Debug support
-      (lsp-enable-file-watchers nil)
-      ;;(lsp-enable-folding nil)              ; I disable folding since I use origami
-      (lsp-enable-imenu t)
-      (lsp-enable-indentation nil)          ; I use prettier
-      ;;(lsp-enable-links nil)                ; No need since we have `browse-url'
-      (lsp-enable-on-type-formatting nil)   ; Prettier handles this
-      (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
-      (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
-      (lsp-enable-text-document-color nil)   ; This is Treesitter's job
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+              (setcar orig-result command-from-exec-path))
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  :diminish "LSP"
+  :ensure t
+  :after company
 
-      (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
-      (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
-      ;; completion
-      (lsp-completion-enable t)
-      (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
-      (lsp-enable-snippet t)                         ; Important to provide full JSX completion
-      (lsp-completion-show-kind t)                   ; Optional
-      ;; headerline
-      (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
-      (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
-      (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
-      (lsp-headerline-breadcrumb-icons-enable nil)
-      ;; modeline
-      (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
-      (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
-      (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
-      (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
-      (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
-      (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
-      ;; lens
-      ;; semantic
-      (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
+  :hook ((lsp-mode . lsp-diagnostics-mode)
+         (lsp-mode . lsp-enable-which-key-integration)
+         ((tsx-ts-mode
+           typescript-ts-mode
+           js-ts-mode) . lsp-deferred))
+  :custom
+  (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+  (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
+  (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
+  (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
+  ;; core
+  (lsp-auto-configure t)                ; Used to decide between current active servers
+  (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
+  (lsp-enable-dap-auto-configure t)     ; Debug support
+  (lsp-enable-file-watchers nil)
+  ;;(lsp-enable-folding nil)              ; I disable folding since I use origami
+  (lsp-enable-imenu t)
+  (lsp-enable-indentation nil)          ; I use prettier
+  ;;(lsp-enable-links nil)                ; No need since we have `browse-url'
+  (lsp-enable-on-type-formatting nil)   ; Prettier handles this
+  (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
+  (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
+  (lsp-enable-text-document-color nil)   ; This is Treesitter's job
 
-      :init
-      (setq lsp-use-plists nil))
+  (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
+  (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
+  ;; completion
+  (lsp-completion-enable t)
+  (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+  (lsp-enable-snippet t)                         ; Important to provide full JSX completion
+  (lsp-completion-show-kind t)                   ; Optional
+  ;; headerline
+  (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
+  (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
+  (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+  (lsp-headerline-breadcrumb-icons-enable nil)
+  ;; modeline
+  (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
+  (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
+  (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+  (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
+  (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
+  (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+  ;; lens
+  ;; semantic
+  (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
 
-    (use-package lsp-ui
-      :ensure t
-      :commands
-      (lsp-ui-doc-show
-       lsp-ui-doc-glance)
-      :bind (:map lsp-mode-map
-                  ("C-c C-d" . 'lsp-ui-doc-glance))
-      :after (lsp-mode evil)
-      :config (setq lsp-ui-doc-enable t
-                    evil-lookup-func #'lsp-ui-doc-glance ; Makes K in evil-mode toggle the doc for symbol at point
-                    lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
-                    lsp-ui-doc-include-signature t       ; Show signature
-                    lsp-ui-doc-position 'at-point))
+  :init
+  (setq lsp-use-plists nil)
+  (advice-add (if (progn (require 'json)
+			 (fboundp 'json-parse-buffer))
+                  'json-parse-buffer
+		'json-read)
+              :around
+              #'lsp-booster--advice-json-parse)
+  (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command))
 
+(use-package lsp-ui
+  :ensure t
+  :commands
+  (lsp-ui-doc-show
+   lsp-ui-doc-glance)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . 'lsp-ui-doc-glance))
+  :after (lsp-mode evil)
+  :config (setq lsp-ui-doc-enable t
+                evil-lookup-func #'lsp-ui-doc-glance ; Makes K in evil-mode toggle the doc for symbol at point
+                lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
+                lsp-ui-doc-include-signature t       ; Show signature
+                lsp-ui-doc-position 'at-point))
 
+#+end_src
 
-;; (use-package lsp-mode
-;;   :commands (lsp lsp-deferred)
-;;   :config
-;;   (evil-define-minor-mode-key 'normal lsp-mode (kbd "SPC l") lsp-command-map)
-;;   (lsp-enable-which-key-integration t))
-
-;; (use-package typescript-mode
-;;   :mode "\\.ts\\'"
-;;   :hook (typescript-mode . lsp-deferred)
-;;   :config
-;;   (setq typescript-indent-level 2))
-
- #+end_src
-
-*** Tree-sitter
+** Tree-sitter
 Emacs treesit will search for specific names for the grammar file, and if it does not match we have to setup a override to point to the correct name of the installed gramar
 [[https://github.com/mickeynp/combobulate?tab=readme-ov-file#complete-example-with-tree-sitter-grammar-installation][Configuration created by mickeynp]]
 #+begin_src emacs-lisp
 ;; (setq treesit-load-name-override-list '((js "libtree-sitter-typescript" "tree_sitter_typescript")))
 (use-package treesit
+  :ensure nil
   :mode (("\\.tsx\\'" . tsx-ts-mode)
          ("\\.js\\'"  . typescript-ts-mode)
          ("\\.mjs\\'" . typescript-ts-mode)
@@ -619,7 +638,7 @@ Emacs treesit will search for specific names for the grammar file, and if it doe
   (mp-setup-install-grammars))
 #+end_src
 
-*** Flycheck
+** Flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
   :ensure t
@@ -629,6 +648,32 @@ Emacs treesit will search for specific names for the grammar file, and if it doe
               ("M-p" . flycheck-previous-error)))
 
 #+end_src
+** Eslint/Prettier
+#+begin_src emacs-lisp
+(use-package lsp-eslint
+  :demand t
+  :after lsp-mode)
+
+#+end_src
+
+Using apheleia to auto-format with prettier on save
+#+begin_src emacs-lisp
+(use-package apheleia
+  :ensure apheleia
+  :diminish ""
+  :defines
+  apheleia-formatters
+  apheleia-mode-alist
+  :functions
+  apheleia-global-mode
+  :config
+  (setq apheleia-formatters-respect-indent-level nil)
+  (setf (alist-get 'prettier-json apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath))
+  (apheleia-global-mode +1))
+
+#+end_src
+** Language Specific setup
 * ORG-MODE
 ** Enabling table of contents
 #+begin_src emacs-lisp
