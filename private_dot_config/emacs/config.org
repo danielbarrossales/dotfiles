@@ -3,11 +3,13 @@
 #+description: DS's personal Emacs config.
 #+startup: showeverything
 #+options: toc:2
+#+PROPERTY: header-args:emacs-lisp :tangle "~/.config/emacs/init.el"
 
 * IMPORTANT PROGRAMS TO LOAD FIRST
-** Elpaca Package Manager
+** Elpaca
+Using this as the package manager for no particular reason besides having followed a tutorial that uses it
 #+begin_src emacs-lisp
-(defvar elpaca-installer-version 0.8)
+(defvar elpaca-installer-version 0.9)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -59,6 +61,11 @@
 
 #+end_src
 
+*** Early-init
+To work properly we need to disable the package manager on early-init
+#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
+(setq package-enable-at-startup nil)
+#+end_src
 ** Load Evil Mode
 #+begin_src emacs-lisp
 ;;When installing a package used in the init file itself,
@@ -92,6 +99,7 @@
 ** General Keybindings
 #+begin_src emacs-lisp
 (use-package general
+  :ensure (:wait t) :demand t ;; required rince general adds a keyword
   :config
   (general-evil-setup)
   (general-create-definer leader-keys
@@ -194,21 +202,22 @@
     "n r f" '(org-roam-node-find :wk "Org-roam find node")
     "n r i" '(org-roam-node-insert :wk "Org-roam node insert"))
   )
+
 #+end_src
 
 ** Setting the font face
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
                     :font "JetBrains Mono"
-                    :height 110
+                    :height 130
                     :weight 'medium)
 (set-face-attribute 'variable-pitch nil
                     :font "Ubuntu Nerd Font"
-                    :height 120
+                    :height 140
                     :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
                     :font "JetBrains Mono"
-                    :height 110
+                    :height 130
                     :weight 'medium)
 
 ;; Make comments and keywords italic
@@ -652,6 +661,7 @@ Emacs treesit will search for specific names for the grammar file, and if it doe
 ** Eslint/Prettier
 #+begin_src emacs-lisp
 (use-package lsp-eslint
+  :ensure nil
   :demand t
   :after lsp-mode)
 
@@ -676,6 +686,51 @@ Using apheleia to auto-format with prettier on save
 #+end_src
 ** Language Specific setup
 * ORG-MODE
+** Keybindings
+#+begin_src emacs-lisp
+(use-package org
+  :ensure (:wait t)
+  :general
+  (org-mode-map
+   "M-S-h" '(lambda ()
+            (interactive)
+            (if (org-at-item-p)
+                (org-shiftleft)      ;; Promote subtree if on a heading
+              (org-promote-subtree)))            ;; Shift left (promote) if on a list item
+
+   "M-S-l" '(lambda ()
+            (interactive)
+            (if (org-at-item-p)
+                (org-shiftright)       ;; Demote subtree if on a heading
+              (org-demote-subtree)))           ;; Shift right (demote) if on a list item
+
+   "M-S-j" '(lambda ()
+            (interactive)
+            (if (org-at-item-p)
+                (org-move-item-down)    ;; Move subtree down if on a heading
+              (org-move-subtree-down)))           ;; Move to the next list item
+
+   "M-S-k" '(lambda ()
+            (interactive)
+            (if (org-at-item-p)
+                (org-move-item-up)      ;; Move subtree up if on a heading
+              (org-move-subtree-up)))
+
+   "M-j" 'org-next-visible-heading
+   "M-k" 'org-previous-visible-heading
+   "M-h" 'org-up-heading       ;; Move to the previous list item
+   "M-l" 'org-next-visible-heading
+   )
+  (general-define-key
+   :keymaps 'org-mode-map
+   :states '(normal visual emacs)
+   "TAB" 'org-cycle
+   "S-TAB" 'org-cycle-global))
+#+end_src
+
+1. adsdasd
+2. 123h2312
+   
 ** Enabling table of contents
 #+begin_src emacs-lisp
 (use-package toc-org
@@ -691,11 +746,6 @@ Using apheleia to auto-format with prettier on save
 (add-hook 'org-mode-hook 'org-indent-mode)
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+end_src
-
-** Keybindings
-#+begin_src emacs-lisp
-(add-hook 'org-mode-hook (lambda () (evil-define-key 'normal org-mode-map "\t" 'org-cycle)))
 #+end_src
 
 ** Source code block tag expansion
@@ -720,11 +770,16 @@ Org-tempo is a org-mode module that for the expoansion of some simple two charac
 | <se                    | '#+BEGIN_SRC emacs-lisp' … '#+END_SRC'  |
 | <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
 
-** Disable automatic src block identation
+*** Disable automatic src block identation
 #+begin_src emacs-lisp
 (setq org-edit-src-content-indentation 0)
 #+end_src
 
+** Org agenda
+Configure org-agenda files directory
+#+begin_src emacs-lisp
+(setq org-agenda-files (quote ("~/Documentos/org")))
+#+end_src
 ** Org-Roam
 #+begin_src emacs-lisp
 (use-package org-roam
